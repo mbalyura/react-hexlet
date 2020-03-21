@@ -1,77 +1,90 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import Card from './components/Card';
-// import Card2 from './components/Card2';
-// import Definitions from './components/Definitions';
-// import Progress from './components/Progress';
-// import Alert from './components/Alert';
-// import ListGroup from './components/ListGroup';
-// import BtnGroup from './BtnGroup';
-// import Carousel from './components/Carousel';
-// import Collapse from './components/Collapse';
+import Card from './components/Card';
+import Card2 from './components/Card2';
+import Definitions from './components/Definitions';
+import Progress from './components/Progress';
+import Alert from './components/Alert';
+import ListGroup from './components/ListGroup';
+import BtnGroup from './components/BtnGroup';
+import Carousel from './components/Carousel';
+import Collapse from './components/Collapse';
 import MyForm from './components/MyForm';
+import Component from './components/Component.jsx';
+import TodoBox from './components/todo/TodoBox.jsx';
 
-// ReactDOM.render(<Card />, document.getElementById('card'));
 
-// ReactDOM.render(
-//   <Card2 title="title from props" text="text from props" />, 
-//   document.getElementById('card2')
-// );
+ReactDOM.render(<Card />, document.getElementById('card'));
 
-// const definitions = [
-//   { dt: 'one', dd: 'two' },
-//   { dt: 'another term', dd: 'another description' },
-// ];
+ReactDOM.render(
+  <Card2 title="title from props" text="text from props" />, 
+  document.getElementById('card2')
+);
 
-// ReactDOM.render(
-//   <Definitions data={definitions} />,
-//   document.getElementById('definitions'),
-// );
+const definitions = [
+  { dt: 'one', dd: 'two' },
+  { dt: 'another term', dd: 'another description' },
+];
 
-// ReactDOM.render(
-//   <Progress percentage={40} />,
-//   document.getElementById('progress'),
-// );
+ReactDOM.render(
+  <Definitions data={definitions} />,
+  document.getElementById('definitions'),
+);
 
-// ReactDOM.render(
-//   <Alert type="danger" text="what is love?" />,
-//   document.getElementById('alert'),
-// );
+ReactDOM.render(
+  <Progress percentage={40} />,
+  document.getElementById('progress'),
+);
 
-// const dom = (
-//   <ListGroup>
-//     <p>one</p>
-//     <p>two</p>
-//     <p>three</p>
-//   </ListGroup>
-// );
+ReactDOM.render(
+  <Alert type="danger" text="what is love?" />,
+  document.getElementById('alert'),
+);
 
-// ReactDOM.render(
-//   dom,
-//   document.getElementById('list'),
-// );
+const dom = (
+  <ListGroup>
+    <p>one</p>
+    <p>two</p>
+    <p>three</p>
+  </ListGroup>
+);
 
-// ReactDOM.render(
-//   <BtnGroup />,
-//   document.getElementById('btngroup'),
-// );
+ReactDOM.render(
+  dom,
+  document.getElementById('list'),
+);
 
-// const images = ['/images/first.jpeg', '/images/second.jpeg', '/images/third.jpeg'];
+ReactDOM.render(
+  <BtnGroup />,
+  document.getElementById('btngroup'),
+);
 
-// ReactDOM.render(
-//   <Carousel images={images} />,
-//   document.getElementById('carousel'),
-// );
+const images = ['/images/first.jpeg', '/images/second.jpeg', '/images/third.jpeg'];
 
-// const text = 'collapse me';
+ReactDOM.render(
+  <Carousel images={images} />,
+  document.getElementById('carousel'),
+);
 
-// ReactDOM.render(
-//   <Collapse text={text} />,
-//   document.getElementById('collapse'),
-// );
+const text = 'collapse me';
+
+ReactDOM.render(
+  <Collapse text={text} />,
+  document.getElementById('collapse'),
+);
 
 ReactDOM.render(
   <MyForm />,
   document.getElementById('myform'),
+);
+
+ReactDOM.render(
+  <Component />,
+  document.getElementById('component'),
+);
+
+ReactDOM.render(
+  <TodoBox />,
+  document.getElementById('todo'),
 );
