@@ -20,7 +20,7 @@ export default class Add extends React.Component {
   }
 
   render() {
-    const { handleAddTask, hideModal } = this.props;
+    const { handleUpdateTasks, hideModal } = this.props;
     const { text } = this.state;
     const task = { text, id: _.uniqueId() };
     return (
@@ -29,7 +29,7 @@ export default class Add extends React.Component {
           <Modal.Title>Add</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={handleAddTask(task)}>
+          <form onSubmit={handleUpdateTasks(task)}>
             <FormGroup>
               <FormControl
                 onChange={this.handleChange}

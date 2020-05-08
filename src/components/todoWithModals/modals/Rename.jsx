@@ -21,7 +21,7 @@ export default class Rename extends React.Component {
   }
 
   render() {
-    const { handleRenameTask, hideModal, currentTask } = this.props;
+    const { handleUpdateTasks, hideModal, currentTask } = this.props;
     const { text } = this.state;
 
     return (
@@ -30,7 +30,7 @@ export default class Rename extends React.Component {
           <Modal.Title>Rename</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={handleRenameTask({ text, id: currentTask.id })}>
+          <form onSubmit={handleUpdateTasks({ text, id: currentTask.id })}>
             <FormGroup>
               <FormControl
                 onChange={this.handleChange}

@@ -27,7 +27,7 @@ export default class TodoBox extends React.Component {
   render() {
     const { items, text } = this.state;
     return (
-      <div className="m-5">
+      <div>
         <div className="mb-3">
           <form onSubmit={this.handleSubmit} className="todo-form form-inline mx-3">
             <div className="form-group">

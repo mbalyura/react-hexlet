@@ -56,7 +56,7 @@ export default class MyForm extends React.Component {
   renderForm() {
     const { data } = this.state;
     return (
-      <form onSubmit={this.handleSubmit} className="m-5">
+      <form onSubmit={this.handleSubmit}>
         <div className="form-row">
           <div className="form-group col-md-6">
             <label htmlFor="inputEmail4" className="col-form-label">Email</label>

@@ -19,39 +19,19 @@ export default class App extends React.Component {
     this.setState({ mode: 'tasklist' });
   }
 
-  showAddModal = () => {
-    this.setState({ mode: 'adding' });
+  showModal = (currentTask, mode) => () => {
+    this.setState({ currentTask, mode });
   }
 
-  showRenameModal = (currentTask) => (e) => {
+  handleUpdateTasks = (task) => (e) => {
     e.preventDefault();
-    this.setState({ currentTask, mode: 'renaming' });
-  }
-
-  showRemoveModal = (currentTask) => (e) => {
-    e.preventDefault();
-    this.setState({ currentTask, mode: 'removing' });
-  }
-
-  handleAddTask = (task) => (e) => {
-    e.preventDefault();
-    const { tasks } = this.state;
-    this.setState({ tasks: [task, ...tasks], mode: 'tasklist' });
-  }
-
-  handleRenameTask = (task) => (e) => {
-    e.preventDefault();
-    const { tasks } = this.state;
-    const i = tasks.findIndex((t) => t.id === task.id);
-    const newTasks = [...tasks.slice(0, i), task, ...tasks.slice(i + 1)];
-    this.setState({ tasks: newTasks, mode: 'tasklist' });
-  }
-
-  handleRemoveTask = ({ id }) => (e) => {
-    e.preventDefault();
-    const { tasks } = this.state;
-    const newTasks = tasks.filter((t) => t.id !== id);
-    this.setState({ tasks: newTasks, mode: 'tasklist' });
+    const { tasks, mode } = this.state;
+    const newTasks = {
+      adding: () => [task, ...tasks],
+      renaming: () => tasks.map((t) => (t.id === task.id ? task : t)),
+      removing: () => tasks.filter((t) => t.id !== task.id),
+    };
+    this.setState({ tasks: newTasks[mode](), mode: 'tasklist' });
   }
 
   renderTasklist() {
@@ -62,17 +42,17 @@ export default class App extends React.Component {
           <div key={task.id}>
             <span className="mr-3">{task.text}</span>
             <button
-              onClick={this.showRenameModal(task)}
+              onClick={this.showModal(task, 'renaming')}
               type="button"
-              className="border-0 p-0 btn-link mr-3"
+              className="border-0 btn-link mr-3 p-0"
               data-testid="item-rename"
             >
               rename
             </button>
             <button
-              onClick={this.showRemoveModal(task)}
+              onClick={this.showModal(task, 'removing')}
               type="button"
-              className="border-0 p-0 btn-link"
+              className="border-0 btn-link p-0"
               data-testid="item-remove"
             >
               remove
@@ -83,14 +63,25 @@ export default class App extends React.Component {
     );
   }
 
-  render() {
+  renderModal() {
     const { mode, currentTask } = this.state;
+    if (mode === 'tasklist') return null;
     const Modal = getModal(mode);
+    return (
+      <Modal
+        handleUpdateTasks={this.handleUpdateTasks}
+        hideModal={this.hideModal}
+        currentTask={currentTask}
+      />
+    );
+  }
+
+  render() {
     return (
       <>
         <div className="mb-3">
           <button
-            onClick={this.showAddModal}
+            onClick={this.showModal(null, 'adding')}
             type="button"
             className="btn btn-secondary"
             data-testid="item-add"
@@ -99,16 +90,7 @@ export default class App extends React.Component {
           </button>
         </div>
         {this.renderTasklist()}
-        {mode !== 'tasklist'
-          && (
-            <Modal
-              handleAddTask={this.handleAddTask}
-              handleRemoveTask={this.handleRemoveTask}
-              handleRenameTask={this.handleRenameTask}
-              hideModal={this.hideModal}
-              currentTask={currentTask}
-            />
-          )}
+        {this.renderModal()}
       </>
     );
   }
