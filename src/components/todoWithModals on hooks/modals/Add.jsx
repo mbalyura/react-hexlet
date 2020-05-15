@@ -1,26 +1,21 @@
-import React, { useEffect, useRef } from 'react';
-import { useFormik } from 'formik';
+import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 import { Modal, FormGroup, FormControl } from 'react-bootstrap';
 
 export default function Add(props) {
-  const { updateTasks, hideModal } = props;
+  const { handleUpdateTasks, hideModal } = props;
+  const [text, updateText] = useState('');
   const inputRef = useRef();
-
-  const formik = useFormik({
-    onSubmit: (values) => {
-      const task = { text: values.body, id: _.uniqueId() };
-      updateTasks((tasks) => {
-        tasks.push(task);
-      });
-      hideModal();
-    },
-    initialValues: { body: '' },
-  });
+  const task = { text, id: _.uniqueId() };
 
   useEffect(() => {
     inputRef.current.focus();
   });
+
+  const handleChange = ({ target }) => {
+    updateText(target.value);
+  };
 
   return (
     <Modal.Dialog>
@@ -28,14 +23,14 @@ export default function Add(props) {
         <Modal.Title>Add</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleUpdateTasks(task)}>
           <FormGroup>
             <FormControl
-              onChange={formik.handleChange}
+              onChange={handleChange}
               data-testid="input-body"
               name="body"
               required
-              value={formik.values.body}
+              value={text}
               ref={inputRef}
             />
           </FormGroup>
@@ -44,4 +39,4 @@ export default function Add(props) {
       </Modal.Body>
     </Modal.Dialog>
   );
-}
+};

@@ -1,25 +1,19 @@
-import React, { useEffect, useRef } from 'react';
-import { useFormik } from 'formik';
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Modal, FormGroup, FormControl } from 'react-bootstrap';
 
 export default function Rename(props) {
-  const { updateTasks, hideModal, currentTask } = props;
+  const { handleUpdateTasks, hideModal, currentTask } = props;
+  const [text, updateText] = useState(currentTask.text);
   const inputRef = useRef();
 
   useEffect(() => {
     inputRef.current.focus();
   });
 
-  const formik = useFormik({
-    onSubmit: (values) => {
-      updateTasks((tasks) => {
-        const taskToRename = tasks.find((task) => task.id === currentTask.id);
-        taskToRename.text = values.body;
-      });
-      hideModal();
-    },
-    initialValues: { body: currentTask.text },
-  });
+  const handleChange = ({ target }) => {
+    updateText(target.value);
+  };
 
   return (
     <Modal.Dialog>
@@ -27,14 +21,14 @@ export default function Rename(props) {
         <Modal.Title>Rename</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleUpdateTasks({ text, id: currentTask.id })}>
           <FormGroup>
             <FormControl
-              onChange={formik.handleChange}
+              onChange={handleChange}
               data-testid="input-body"
               name="body"
               required
-              value={formik.values.body}
+              value={text}
               ref={inputRef}
             />
           </FormGroup>
@@ -43,4 +37,4 @@ export default function Rename(props) {
       </Modal.Body>
     </Modal.Dialog>
   );
-}
+};

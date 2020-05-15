@@ -7,13 +7,15 @@ export default class Carousel extends React.Component {
     this.state = { active: 0 };
   }
 
-  onClickPrev = () => {
+  onClickPrev = (e) => {
+    e.preventDefault();
     const { active } = this.state;
     const newIndex = active === 0 ? 2 : active - 1;
     this.setState({ active: newIndex });
   };
 
-  onClickNext = () => {
+  onClickNext = (e) => {
+    e.preventDefault();
     const { active } = this.state;
     const newIndex = active === 2 ? 0 : active + 1;
     this.setState({ active: newIndex });
@@ -55,4 +57,3 @@ export default class Carousel extends React.Component {
     );
   }
 }
-

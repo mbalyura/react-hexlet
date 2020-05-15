@@ -1,97 +1,78 @@
-import React from 'react';
-// import { useState } from 'react';
-// import { useImmer } from 'use-immer';
+import React, { useState } from 'react';
+import { useImmer } from 'use-immer';
 import getModal from './modals/index';
 
-// NOTE use web hooks with https://github.com/immerjs/use-immer
+// ! using web hooks immer && formik
 
-export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      tasks: [],
-      currentTask: null,
-      mode: 'tasklist',
-    };
-  }
+export default function App() {
+  const [state, updateState] = useState({
+    currentTask: null,
+    mode: 'tasklist',
+  });
 
-  hideModal = () => {
-    this.setState({ mode: 'tasklist' });
-  }
+  const [tasks, updateTasks] = useImmer([]);
 
-  showModal = (currentTask, mode) => () => {
-    this.setState({ currentTask, mode });
-  }
+  const hideModal = () => {
+    updateState({ ...state, mode: 'tasklist' });
+  };
 
-  handleUpdateTasks = (task) => (e) => {
-    e.preventDefault();
-    const { tasks, mode } = this.state;
-    const newTasks = {
-      adding: () => [task, ...tasks],
-      renaming: () => tasks.map((t) => (t.id === task.id ? task : t)),
-      removing: () => tasks.filter((t) => t.id !== task.id),
-    };
-    this.setState({ tasks: newTasks[mode](), mode: 'tasklist' });
-  }
+  const showModal = (currentTask, mode) => () => {
+    updateState({ currentTask, mode });
+  };
 
-  renderTasklist() {
-    const { tasks } = this.state;
-    return (
-      <>
-        {tasks.map((task) => (
-          <div key={task.id}>
-            <span className="mr-3">{task.text}</span>
-            <button
-              onClick={this.showModal(task, 'renaming')}
-              type="button"
-              className="border-0 btn-link mr-3 p-0"
-              data-testid="item-rename"
-            >
-              rename
-            </button>
-            <button
-              onClick={this.showModal(task, 'removing')}
-              type="button"
-              className="border-0 btn-link p-0"
-              data-testid="item-remove"
-            >
-              remove
-            </button>
-          </div>
-        ))}
-      </>
-    );
-  }
+  const renderTasklist = () => (
+    <>
+      {tasks.map((task) => (
+        <div key={task.id}>
+          <span className="mr-3">{task.text}</span>
+          <button
+            onClick={showModal(task, 'renaming')}
+            type="button"
+            className="border-0 btn-link mr-3 p-0"
+            data-testid="item-rename"
+          >
+            rename
+          </button>
+          <button
+            onClick={showModal(task, 'removing')}
+            type="button"
+            className="border-0 btn-link p-0"
+            data-testid="item-remove"
+          >
+            remove
+          </button>
+        </div>
+      ))}
+    </>
+  );
 
-  renderModal() {
-    const { mode, currentTask } = this.state;
+  const renderModal = () => {
+    const { mode, currentTask } = state;
     if (mode === 'tasklist') return null;
     const Modal = getModal(mode);
     return (
       <Modal
-        handleUpdateTasks={this.handleUpdateTasks}
-        hideModal={this.hideModal}
+        updateTasks={updateTasks}
+        hideModal={hideModal}
         currentTask={currentTask}
       />
     );
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <div className="mb-3">
-          <button
-            onClick={this.showModal(null, 'adding')}
-            type="button"
-            className="btn btn-secondary"
-            data-testid="item-add"
-          >
-            add
-          </button>
-        </div>
-        {this.renderTasklist()}
-        {this.renderModal()}
-      </>
-    );
-  }
+  return (
+    <>
+      <div className="mb-3">
+        <button
+          onClick={showModal(null, 'adding')}
+          type="button"
+          className="btn btn-secondary"
+          data-testid="item-add"
+        >
+          add
+        </button>
+      </div>
+      {renderTasklist()}
+      {renderModal()}
+    </>
+  );
 }
